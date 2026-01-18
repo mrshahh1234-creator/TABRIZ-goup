@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>TABRIZ | Akkaunt</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light p-5">
+    <div class="container bg-white p-5 border shadow-sm" style="max-width: 500px;">
+        <h4 class="fw-bold border-bottom pb-3">Foydalanuvchi profili</h4>
+        <div class="my-4">
+            <p><b>Ism:</b> <span id="n"></span></p>
+            <p><b>Tel:</b> <span id="p"></span></p>
+            <p><b>Status:</b> <span class="badge bg-success">Faol</span></p>
+        </div>
+        <button onclick="location.href='material.html'" class="btn btn-primary w-100">YANGI BUYURTMA BOSHLASH</button>
+    </div>
+    <script>
+        document.getElementById('n').innerText = localStorage.getItem('u_name');
+        document.getElementById('p').innerText = localStorage.getItem('u_phone');
+    </script>
+</body>
+</html>
