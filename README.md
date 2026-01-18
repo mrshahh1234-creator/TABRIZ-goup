@@ -1,2 +1,2 @@
 # Mebel-cex
-Fabric 
+Fabrica
