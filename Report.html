@@ -1,1 +1,27 @@
 
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>TABRIZ group | Hisobot</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="p-5">
+    <div class="card p-4 shadow">
+        <h3>Tayyor hisobot</h3>
+        <hr>
+        <p>👤 Mijoz: <span id="u"></span></p>
+        <p>🪵 Material: <span id="m"></span></p>
+        <p>🎨 Kromka: <span id="k"></span></p>
+        <button class="btn btn-success w-100 py-3" onclick="finish()">@raspilnaya_bot'ga yuborish</button>
+    </div>
+    <script>
+        document.getElementById('u').innerText = localStorage.getItem('user');
+        document.getElementById('m').innerText = localStorage.getItem('mat');
+        document.getElementById('k').innerText = localStorage.getItem('kro');
+        function finish() {
+            alert("Buyurtma yuborildi! Mustafaev Academy orqali ishlab chiqildi.");
+        }
+    </script>
+</body>
+</html>
