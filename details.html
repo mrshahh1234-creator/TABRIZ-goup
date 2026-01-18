@@ -4,27 +4,26 @@
     <meta charset="UTF-8">
     <title>TABRIZ | Detallar</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background: url('https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&q=80&w=2069') no-repeat center center fixed; background-size: cover; }
+        .gl-card { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); padding: 30px; border-radius: 15px; margin-top: 50px; }
+        .academy { position: fixed; bottom: 15px; right: 20px; color: white; font-weight: bold; }
+    </style>
 </head>
-<body class="p-4 bg-light">
-    <div class="container bg-white p-4 border">
-        <h4 class="mb-4">4. O'lchamlar va tomolar</h4>
-        <table class="table table-bordered" id="dt">
-            <thead class="table-dark small">
-                <tr><th>Nomi</th><th>Bo'yi</th><th>Eni</th><th>Soni</th><th>Kromka</th></tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><input type="text" class="form-control"></td>
-                    <td><input type="number" class="form-control"></td>
-                    <td><input type="number" class="form-control"></td>
-                    <td><input type="number" class="form-control"></td>
-                    <td><input type="text" class="form-control" placeholder="B1+E2"></td>
-                </tr>
-            </tbody>
-        </table>
-        <button class="btn btn-sm btn-dark" onclick="add()">+ QATOR</button>
-        <button class="btn btn-primary float-end" onclick="calc()">OPTIMIZATSIYA &rarr;</button>
+<body>
+    <div class="container">
+        <div class="gl-card">
+            <h2 class="fw-bold text-center" style="color: #e24329;">TABRIZ group</h2>
+            <h4 class="mb-4">4. Detallar o'lchamlari</h4>
+            <table class="table table-bordered bg-white" id="dt">
+                <thead class="table-dark"><tr><th>Nomi</th><th>Bo'yi</th><th>Eni</th><th>Soni</th><th>Kromka</th></tr></thead>
+                <tbody><tr><td><input type="text" class="form-control"></td><td><input type="number" class="form-control"></td><td><input type="number" class="form-control"></td><td><input type="number" class="form-control"></td><td><input type="text" class="form-control"></td></tr></tbody>
+            </table>
+            <button class="btn btn-dark btn-sm" onclick="add()">+ QATOR</button>
+            <button class="btn btn-primary float-end" onclick="calc()">OPTIMIZATSIYA</button>
+        </div>
     </div>
+    <div class="academy">MUSTAFAYEV ACADEMY</div>
     <script>
         function add() {
             let r = document.querySelector("#dt tbody").insertRow();
