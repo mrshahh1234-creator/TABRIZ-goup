@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TABRIZ GROUP | PRO SYSTEM</title>
+    <style>
+        :root { 
+            --gold: #d4af37; --accent: #b8860b; --dark: #020617; 
+            --glass: rgba(15, 23, 42, 0.95); --border: rgba(255, 255, 255, 0.1);
+        }
+        
+        body, html { 
+            margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; 
+            background: var(--dark); color: white; height: 100vh; overflow: hidden;
+        }
+
+        .background {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(2, 6, 23, 0.8), rgba(2, 6, 23, 0.9)), 
+                        url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2000&auto=format&fit=crop');
+            background-size: cover; z-index: -1;
+        }
+
+        .container {
+            display: flex; justify-content: center; align-items: center; height: 100vh; padding: 20px;
+        }
+
+        /* Ҳар бир ойна (Screen) учун стил */
+        .screen {
+            display: none; width: 100%; max-width: 500px;
+            background: var(--glass); backdrop-filter: blur(20px);
+            border-radius: 30px; border: 1px solid var(--border);
+            padding: 35px; box-sizing: border-box;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            animation: fadeIn 0.4s ease;
+        }
+
+        .screen.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+        h1 { color: var(--gold); text-align: center; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 25px; }
+
+        input, select { 
+            width: 100%; padding: 14px; margin-bottom: 15px;
+            background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+            border-radius: 12px; color: white; outline: none; box-sizing: border-box;
+        }
+
+        .btn { 
+            width: 100%; padding: 15px; border-radius: 12px; border: none;
+            background: linear-gradient(135deg, var(--gold), var(--accent));
+            color: black; font-weight: bold; cursor: pointer; text-transform: uppercase;
+        }
+
+        .btn-outline { background: transparent; border: 1px solid var(--border); color: white; margin-top: 10px; }
+
+        .scroll-box { max-height: 300px; overflow-y: auto; margin-bottom: 20px; padding-right: 5px; }
+        
+        table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        th { color: var(--gold); padding: 10px; border-bottom: 1px solid var(--border); text-align: left; }
+        td { padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+        .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .cat-card { 
+            padding: 20px; border: 1px solid var(--border); border-radius: 15px; 
+            text-align: center; cursor: pointer; transition: 0.3s;
+        }
+        .cat-card:hover { border-color: var(--gold); background: rgba(212, 175, 55, 0.1); }
+
+        canvas { background: white; border-radius: 20px; width: 100%; margin-top: 15px; }
+
+        .nav-link { display: block; text-align: center; margin-top: 20px; color: #888; text-decoration: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="background"></div>
+
+<div class="container">
+
+    <div id="scr-login" class="screen active">
+        <h1>TABRIZ | КИРИШ</h1>
+        <input type="tel" id="user-phone" value="+998">
+        <button class="btn" onclick="sendAuthCode()">Код олиш</button>
+        <div id="auth-code-box" style="display:none; margin-top:20px;">
+            <input type="number" id="auth-code-input" placeholder="Кодни киритинг">
+            <button class="btn" onclick="verifyAuth()">Тизимга кириш</button>
+        </div>
+    </div>
+
+    <div id="scr-cabinet" class="screen">
+        <h1>КАБИНЕТ</h1>
+        <p style="text-align:center;">Хуш келибсиз!</p>
+        <h3 id="display-phone" style="text-align:center; color:var(--gold);"></h3>
+        <button class="btn" onclick="showScreen('scr-catalog')">➕ Янги буюртма</button>
+        <button class="btn btn-outline" onclick="alert('Тарих бўш')">📋 Тарих</button>
+        <span class="nav-link" onclick="location.reload()">Чиқиш</span>
+    </div>
+
+    <div id="scr-catalog" class="screen">
+        <h1>КАТАЛОГ</h1>
+        <div class="cat-grid">
+            <div class="cat-card" onclick="selectMaterial('ЛДСП Оқ', '2800x2070')"><b>ЛДСП</b><br>Оқ</div>
+            <div class="cat-card" onclick="selectMaterial('ЛМДФ Кулранг', '2800x1220')"><b>ЛМДФ</b><br>Кулранг</div>
+            <div class="cat-card" onclick="selectMaterial('Акрил Қора', '2800x1220')"><b>Акрил</b><br>Қора</div>
+            <div class="cat-card" onclick="selectMaterial('Мрамор', '3050x600')"><b>Mebel</b><br>Мрамор</div>
+        </div>
+        <span class="nav-link" onclick="showScreen('scr-cabinet')">⬅ Орқага</span>
+    </div>
+
+    <div id="scr-order" class="screen" style="max-width:700px;">
+        <h1 id="order-mat-name">ЎЛЧАМЛАР</h1>
+        <div class="scroll-box">
+            <table>
+                <thead>
+                    <tr><th>Бўйи (L)</th><th>Эни (W)</th><th>Сони</th><th>Кромка</th><th></th></tr>
+                </thead>
+                <tbody id="parts-table"></tbody>
+            </table>
+        </div>
+        <button class="btn btn-outline" onclick="addNewRow()">+ Детал қўшиш</button>
+        <button class="btn" style="margin-top:15px;" onclick="startNesting()">📐 Ҳисоблаш</button>
+        <span class="nav-link" onclick="showScreen('scr-catalog')">⬅ Каталогга қайтиш</span>
+    </div>
+
+    <div id="scr-optim" class="screen" style="max-width:750px;">
+        <h1>ЧИЗМА</h1>
+        <canvas id="nestCanvas"></canvas>
+        <div style="display:flex; justify-content:space-around; margin-top:20px; font-weight:bold;">
+            <span>🩹 Кромка: <span id="res-edge" style="color:var(--gold)">0</span> м.п.</span>
+            <span>📦 Лист: <span id="res-sheets" style="color:var(--gold)">1</span> та</span>
+        </div>
+        <button class="btn" style="margin-top:20px;" onclick="showScreen('scr-report')">📊 Ҳисоботни кўриш</button>
+    </div>
+
+    <div id="scr-report" class="screen">
+        <h1>ЯКУНИЙ ҲИСОБОТ</h1>
+        <div id="final-report-box" style="background:rgba(0,0,0,0.3); padding:20px; border-radius:15px; font-size:14px; line-height:1.6;">
+            </div>
+        <button class="btn" style="margin-top:20px;" onclick="sendOrderToBot()">🚀 Ботга юбориш</button>
+        <span class="nav-link" onclick="showScreen('scr-optim')">⬅ Чизмани кўриш</span>
+    </div>
+
+</div>
+
+<script>
+    const BOT_TOKEN = "7927717291:AAG4h_LbZoY-1s2y0_zzNoCFudrU7pPDNas";
+    const ADMIN_ID = "1015769230";
+    let tempCode, userPhone, selectedMat;
+
+    // Экранларни алмаштириш функцияси
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    // 1. АВТОРИЗАЦИЯ
+    async function sendAuthCode() {
+        userPhone = document.getElementById('user-phone').value;
+        tempCode = Math.floor(1000 + Math.random() * 9000);
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${ADMIN_ID}&text=${encodeURIComponent('🔑 TABRIZ КИРИШ КОДИ: ' + tempCode + '\n📞 Тел: ' + userPhone)}`);
+        document.getElementById('auth-code-box').style.display = 'block';
+        alert("Код администраторга юборилди!");
+    }
+
+    function verifyAuth() {
+        if(document.getElementById('auth-code-input').value == tempCode) {
+            document.getElementById('display-phone').innerText = userPhone;
+            showScreen('scr-cabinet');
+        } else alert("Хато код!");
+    }
+
+    // 2. КАТАЛОГ
+    function selectMaterial(name, size) {
+        selectedMat = { name, w: parseInt(size.split('x')[0]), h: parseInt(size.split('x')[1]) };
+        document.getElementById('order-mat-name').innerText = name;
+        showScreen('scr-order');
+        if(document.getElementById('parts-table').children.length === 0) addNewRow();
+    }
+
+    // 3. ДЕТАЛЛАР
+    function addNewRow() {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td><input type="number" class="l" value="600"></td>
+            <td><input type="number" class="w" value="400"></td>
+            <td><input type="number" class="q" value="1"></td>
+            <td><div style="display:flex;gap:2px"><input type="checkbox" class="e1"><input type="checkbox" class="e2"><input type="checkbox" class="e3"><input type="checkbox" class="e4"></div></td>
+            <td onclick="this.parentElement.remove()" style="cursor:pointer">❌</td>
+        `;
+        document.getElementById('parts-table').appendChild(tr);
+    }
+
+    // 4. ОПТИМИЗАЦИЯ (ЧИЗИШ)
+    function startNesting() {
+        const canvas = document.getElementById('nestCanvas');
+        const ctx = canvas.getContext('2d');
+        const scale = 0.22;
+        canvas.width = selectedMat.w * scale;
+        canvas.height = selectedMat.h * scale;
+
+        ctx.fillStyle = "white"; ctx.fillRect(0,0,canvas.width,canvas.height);
+
+        let totalEdge = 0, curX = 5, curY = 5, rowH = 0;
+        let reportDetails = "";
+
+        document.querySelectorAll('#parts-table tr').forEach((row, i) => {
+            const L = parseInt(row.querySelector('.l').value);
+            const W = parseInt(row.querySelector('.w').value);
+            const Q = parseInt(row.querySelector('.q').value);
+            const ed = [row.querySelector('.e1').checked, row.querySelector('.e2').checked, row.querySelector('.e3').checked, row.querySelector('.e4').checked];
+            
+            totalEdge += ((ed[0]?L:0)+(ed[1]?L:0)+(ed[2]?W:0)+(ed[3]?W:0)) * Q;
+            const edStr = (ed[0]?'L1 ':'')+(ed[1]?'L2 ':'')+(ed[2]?'W1 ':'')+(ed[3]?'W2 ':'');
+            reportDetails += `${i+1}. ${L}x${W} | ${Q}та | Кромка: ${edStr || 'йўқ'}<br>`;
+
+            for(let j=0; j<Q; j++) {
+                if(curX + L*scale > canvas.width - 5) { curX = 5; curY += rowH + 2; rowH = 0; }
+                ctx.fillStyle = "rgba(212, 175, 55, 0.2)";
+                ctx.fillRect(curX, curY, L*scale, W*scale);
+                ctx.strokeStyle = "#b8860b"; ctx.strokeRect(curX, curY, L*scale, W*scale);
+                
+                // Кромка чизиғи
+                ctx.strokeStyle = "red"; ctx.lineWidth = 2;
+                if(ed[0]) { ctx.beginPath(); ctx.moveTo(curX, curY); ctx.lineTo(curX+L*scale, curY); ctx.stroke(); }
+                if(ed[1]) { ctx.beginPath(); ctx.moveTo(curX, curY+W*scale); ctx.lineTo(curX+L*scale, curY+W*scale); ctx.stroke(); }
+                
+                curX += L*scale + 2;
+                rowH = Math.max(rowH, W*scale);
+            }
+        });
+
+        document.getElementById('res-edge').innerText = (totalEdge/1000).toFixed(2);
+        document.getElementById('final-report-box').innerHTML = `<b>Материал:</b> ${selectedMat.name}<br><b>Ўлчам:</b> ${selectedMat.w}x${selectedMat.h}<hr>${reportDetails}`;
+        showScreen('scr-optim');
+    }
+
+    // 5. ТЕЛЕГРАМГА ЮБОРИШ
+    async function sendOrderToBot() {
+        const report = document.getElementById('final-report-box').innerText;
+        const edge = document.getElementById('res-edge').innerText;
+        const msg = `🚀 ЯНГИ БУЮРТМА: TABRIZ GROUP\n👤 Мижоз: ${userPhone}\n\n${report}\n🩹 Жами кромка: ${edge} м.п.`;
+        
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${ADMIN_ID}&text=${encodeURIComponent(msg)}`);
+        alert("Буюртма муваффақиятли юборилди!");
+        showScreen('scr-cabinet');
+    }
+</script>
+
+</body>
+</html>
