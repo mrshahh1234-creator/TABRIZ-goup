@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <title>Optimization</title>
+</head>
+<body>
+    <div class="screen" style="max-width:700px;">
+        <h1>ЧИЗМА</h1>
+        <canvas id="canvas"></canvas>
+        <button class="btn" onclick="window.location.href='report.html'">📊 Ҳисоботни кўриш</button>
+    </div>
+    <script>
+        const parts = JSON.parse(localStorage.getItem('current_parts'));
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 600; canvas.height = 400; // Тахминий ўлчам
+        
+        ctx.fillStyle = "white"; ctx.fillRect(0,0,600,400);
+        let x=10, y=10, rowH=0;
+
+        parts.forEach(p => {
+            for(let i=0; i<p.q; i++) {
+                let sw = p.l * 0.1, sh = p.w * 0.1;
+                if(x + sw > 580) { x=10; y+=rowH+5; rowH=0; }
+                ctx.fillStyle = "rgba(212,175,55,0.3)";
+                ctx.fillRect(x, y, sw, sh);
+                ctx.strokeStyle = "gold"; ctx.strokeRect(x,y,sw,sh);
+                // Кромка (қизил чизиқ)
+                ctx.strokeStyle = "red"; ctx.lineWidth = 2;
+                if(p.e1) { ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x+sw,y); ctx.stroke(); }
+                x += sw + 5; rowH = Math.max(rowH, sh);
+            }
+        });
+    </script>
+</body>
+</html>
