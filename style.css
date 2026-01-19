@@ -1,8 +1,0 @@
-:root { --gold: #d4af37; --dark: #020617; }
-body { background: var(--dark); color: white; font-family: sans-serif; margin: 0; }
-.wrapper { display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; box-sizing: border-box; }
-.screen { background: rgba(15, 23, 42, 0.95); padding: 30px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.1); width: 100%; max-width: 400px; text-align: center; }
-.btn { background: var(--gold); border: none; padding: 15px; width: 100%; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.card-item { padding: 15px; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; cursor: pointer; }
-input { width: 100%; padding: 12px; margin-bottom: 10px; background: rgba(255,255,255,0.05); color: white; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; box-sizing: border-box; }
