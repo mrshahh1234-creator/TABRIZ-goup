@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <title>Order</title>
+</head>
+<body>
+    <div class="screen" style="max-width:600px;">
+        <h1 id="mat-name">ЎЛЧАМЛАР</h1>
+        <table>
+            <thead><tr><th>L</th><th>W</th><th>Сони</th><th>Кромка (1,2,3,4)</th></tr></thead>
+            <tbody id="p-body"></tbody>
+        </table>
+        <button class="btn" style="background:grey" onclick="addRow()">+ Детал қўшиш</button>
+        <button class="btn" onclick="save()">📐 Ҳисоблаш</button>
+    </div>
+    <script>
+        document.getElementById('mat-name').innerText = localStorage.getItem('sel_mat');
+        function addRow() {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><input type="number" class="l" value="600"></td>
+                <td><input type="number" class="w" value="400"></td>
+                <td><input type="number" class="q" value="1"></td>
+                <td><input type="checkbox" class="e1"><input type="checkbox" class="e2"><input type="checkbox" class="e3"><input type="checkbox" class="e4"></td>
+            `;
+            document.getElementById('p-body').appendChild(tr);
+        }
+        function save() {
+            let data = [];
+            document.querySelectorAll('#p-body tr').forEach(r => {
+                data.push({
+                    l: r.querySelector('.l').value,
+                    w: r.querySelector('.w').value,
+                    q: r.querySelector('.q').value,
+                    e1: r.querySelector('.e1').checked, e2: r.querySelector('.e2').checked,
+                    e3: r.querySelector('.e3').checked, e4: r.querySelector('.e4').checked
+                });
+            });
+            localStorage.setItem('current_parts', JSON.stringify(data));
+            window.location.href = 'optimization.html';
+        }
+        addRow();
+    </script>
+</body>
+</html>
